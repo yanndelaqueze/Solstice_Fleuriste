@@ -10,9 +10,46 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_10_10_150147) do
+ActiveRecord::Schema[7.1].define(version: 2023_10_11_064127) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "categories", force: :cascade do |t|
+    t.string "name", default: ""
+    t.integer "position", default: 1
+    t.boolean "display", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.float "total"
+    t.float "subtotal"
+    t.bigint "user_id", null: false
+    t.string "status", default: "En cours"
+    t.string "delivery_address"
+    t.string "transport", default: "Click & Collect"
+    t.datetime "date"
+    t.string "delivery_instructions"
+    t.string "phone"
+    t.float "delivery_cost", default: 0.0
+    t.boolean "delivery_possible", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_orders_on_user_id"
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name", default: ""
+    t.text "description", default: ""
+    t.float "min_price", default: 0.0
+    t.boolean "available", default: true
+    t.bigint "category_id", null: false
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["category_id"], name: "index_products_on_category_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -26,4 +63,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_10_150147) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "orders", "users"
+  add_foreign_key "products", "categories"
 end
