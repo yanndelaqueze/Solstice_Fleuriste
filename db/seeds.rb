@@ -1,19 +1,14 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+User.create!(
+  email: 'admin@example.com',
+  password: 'password',
+  password_confirmation: 'password'
+)
 
 bouquet = Category.new(
   name: "Bouquets",
   position: 10,
   display: true
 )
-bouquet.save!
 print "1 category / "
 
 bouquet_printemps = Product.new(
@@ -24,10 +19,6 @@ bouquet_printemps = Product.new(
   available: true,
   category: bouquet
 )
-# file = URI.open("https://res.cloudinary.com/dqfgqm3cn/image/upload/v1694609863/Solstice/Bouquet_Printemps_apdtox.jpg")
-# file2 = URI.open("https://res.cloudinary.com/dqfgqm3cn/image/upload/v1694699688/Solstice/Bouquet_Printemps2_br3b9g.jpg")
-# bouquet_printemps.photos.attach(io: file, filename: "image.png", content_type: "image/png")
-# bouquet_printemps.photos.attach(io: file2, filename: "image.png", content_type: "image/png")
 
 bouquet_printemps.save!
 print "1 product / "

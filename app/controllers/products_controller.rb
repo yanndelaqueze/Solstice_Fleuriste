@@ -3,11 +3,11 @@ class ProductsController < ApplicationController
   before_action :set_product, only: %i[show edit update destroy]
 
   def index
-    @products = Product.all.order(order: :asc)
+    @products = Product.all.order(position: :asc)
   end
 
   def show
-    @order_item = OrderItem.new
+    # @order_item = OrderItem.new
   end
 
   def new
@@ -30,6 +30,19 @@ class ProductsController < ApplicationController
   end
 
   def update
+    # Check for removed images
+    if params[:product][:remove_image].present?
+      params[:product][:remove_image].each do |image_id|
+        @product.photos.find(image_id).purge
+      end
+    end
+
+    # Attach new images
+    if params[:product][:new_images].present?
+      params[:product][:new_images].each do |image|
+        @product.photos.attach(image)
+      end
+    end
     if @product.update(product_params)
       redirect_to category_path(@product.category), notice: 'Product was successfully updated'
     else
